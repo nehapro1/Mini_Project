@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory,send_file
 import pandas as pd
 import os
+import seaborn as sns
 from werkzeug.utils import secure_filename
 import plotly.express as px
 import plotly.io as pio
+import matplotlib.pyplot as plt
 from time import time 
 
 app = Flask(__name__,static_url_path='/static')
@@ -23,13 +25,38 @@ def read_csv_file(filepath):
 
 @app.route('/summary/<filename>')
 def summary(filename):
+    # Ensure the file is allowed (based on its extension)
+    if not allowed_file(filename):
+        return redirect(url_for('index', error='Invalid file type'))
+
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    
+    # Check if the file exists
     if not os.path.exists(filepath):
         return redirect(url_for('index', error='File not found'))
-    data = read_csv_file(filepath)
-    summary_stats = data.describe().to_html(classes='table table-striped table-bordered')
-    return render_template('summary.html', summary_stats=summary_stats, filename=filename)
 
+    # Attempt to read the CSV file
+    try:
+        data = read_csv_file(filepath)
+    except Exception as e:
+        # Handle file reading errors
+        return redirect(url_for('index', error='Error reading file: ' + str(e)))
+
+    # Proceed with generating summary statistics, visualizations, etc.
+    # Make sure to end with a return statement that returns a valid response,
+    # such as render_template or send_file.
+    
+    # Example:
+    summary_stats = data.describe().to_html(classes='table table-striped table-bordered')
+    return render_template('summary.html', summary_stats=summary_stats)
+
+# Ensure the read_csv_file function also ends with a return statement
+def read_csv_file(filepath):
+    try:
+        return pd.read_csv(filepath)
+    except UnicodeDecodeError as e:
+        # Handle specific exceptions or return a default value
+        return pd.DataFrame()  # Return an empty DataFrame or handle as needed
 
 
 

@@ -2,9 +2,13 @@
 {% block title %}Visualize Data{% endblock %}
 {% block content %}
 <h1>Data Visualization</h1>
-
+<br>
+<br>
 <!-- Chart Type Selection -->
 <h2>Select Chart Type</h2>
+<div class="alert alert-info" role="alert">
+    Select a chart type to visualize the data.
+</div>
 <div class="row">
     <div class="col-md-3">
         <div class="card" onclick="selectChartType('bar')">
@@ -73,6 +77,7 @@
 </div>
 <hr>
 
+
 <!-- Visualization Display -->
 <h2>Visualization</h2>
 <div class="container-fluid">
@@ -93,6 +98,18 @@
         });
         document.querySelector(`.card[onclick="selectChartType('${type}')"]`).classList.add('border-primary');
     }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#data-table').DataTable({
+            "paging": true,
+            "searching": true,
+            "info": true,
+            "lengthChange": false,
+            "pageLength": 10
+        });
+    });
 </script>
 
 {% endblock %}
