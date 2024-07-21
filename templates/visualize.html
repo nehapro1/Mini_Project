@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block title %}Visualize Data{% endblock %}
+{% block content %}
+<h1>Data Visualization</h1>
+
+<!-- Filter Form -->
+<form method="post" id="filter-form">
+    <div class="form-group">
+        <label for="chart_type">Chart Type:</label>
+        <!-- Chart type selection using images -->
+        <div class="chart-selection">
+            <img src="{{ url_for('static', filename='images/chart_types/bar_chart.png') }}" alt="Bar Chart" class="chart-image" onclick="selectChartType('bar')">
+            <img src="{{ url_for('static', filename='images/chart_types/line_chart.png') }}" alt="Line Chart" class="chart-image" onclick="selectChartType('line')">
+            <img src="{{ url_for('static', filename='images/chart_types/scatter_plot.png') }}" alt="Scatter Plot" class="chart-image" onclick="selectChartType('scatter')">
+            <img src="{{ url_for('static', filename='images/chart_types/pie_chart.png') }}" alt="Pie Chart" class="chart-image" onclick="selectChartType('pie')">
+        </div>
+        <input type="hidden" id="chart_type" name="chart_type" value="">
+    </div>
+    <div class="form-group">
+        <label for="x_input">X Column:</label>
+        <select class="form-control" id="x_input" name="x_input">
+            {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="y_input">Y Column:</label>
+        <select class="form-control" id="y_input" name="y_input">
+            {% for column in columns %}
+            <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Visualize</button>
+</form>
+
+<!-- Data Preview -->
+<h2>Data Preview</h2>
+<div class="table-responsive">
+    <table id="data-table" class="table table-striped table-bordered">
+        {{ data | safe }}
+    </table>
+</div>
+<hr>
+
+<!-- Visualization Display -->
+<h2>Visualization</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {{ graph_html | safe }}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable with specific options
+        $('#data-table').DataTable({
+            "scrollY": "400px",
+            "scrollCollapse": true,
+            "paging": true,
+            "pageLength": 50,
+            "info": true,
+            "searching": true,
+            "ordering": true
+        });
+    });
+
+    // Function to select the chart type based on image click
+    function selectChartType(type) {
+        document.getElementById('chart_type').value = type;
+        // Update dropdown button text to selected chart type
+        document.getElementById('chartTypeDropdown').innerHTML = document.querySelector(`a[data-value="${type}"]`).innerHTML;
+    }
+</script>
+
+{% endblock %}

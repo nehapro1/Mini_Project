@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Data Alteration{% endblock %}
+{% block content %}
+<h1>Data Alteration</h1>
+<form method="post" novalidate>
+    <div class="form-group">
+        <label for="fill_value">Fill Missing Values:</label>
+        <input type="text" class="form-control" id="fill_value" name="fill_value" placeholder="Value to fill missing data">
+        <div class="invalid-feedback">Please enter a value.</div>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="drop_duplicates" name="drop_duplicates">
+        <label class="form-check-label" for="drop_duplicates">Remove Duplicates</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Changes</button>
+</form>
+<hr>
+
+<!-- Data Preview -->
+<h2>Data Preview</h2>
+<div class="table-responsive">
+    {{ data | safe }}
+</div>
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}Summary Statistics{% endblock %}
+{% block content %}
+<h1>Summary Statistics</h1>
+<div class="table-responsive">
+    {{ summary_stats | safe }}
+</div>
+<a href="{{ url_for('visualize', filename=filename) }}" class="btn btn-primary">Back to Visualization</a>
+{% endblock %}
