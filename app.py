@@ -30,6 +30,15 @@ def summary(filename):
     summary_stats = data.describe().to_html(classes='table table-striped table-bordered')
     return render_template('summary.html', summary_stats=summary_stats, filename=filename)
 
+
+
+
+@app.route('/dashboard')
+def dashboard():
+    # Your dashboard logic here
+    return render_template('dashboard.html')
+
+
 @app.route('/some-route')
 def some_view_function():
     return render_template('visualize.html', current_time=time())

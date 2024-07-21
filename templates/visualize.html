@@ -3,19 +3,48 @@
 {% block content %}
 <h1>Data Visualization</h1>
 
+<!-- Chart Type Selection -->
+<h2>Select Chart Type</h2>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card" onclick="selectChartType('bar')">
+            <img src="{{ url_for('static', filename='images/chart_types/bar_chart.png') }}" class="card-img-top" alt="Bar Chart">
+            <div class="card-body">
+                <h5 class="card-title">Bar Chart</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" onclick="selectChartType('line')">
+            <img src="{{ url_for('static', filename='images/chart_types/line_chart.png') }}" class="card-img-top" alt="Line Chart">
+            <div class="card-body">
+                <h5 class="card-title">Line Chart</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" onclick="selectChartType('scatter')">
+            <img src="{{ url_for('static', filename='images/chart_types/scatter_plot.png') }}" class="card-img-top" alt="Scatter Plot">
+            <div class="card-body">
+                <h5 class="card-title">Scatter Plot</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" onclick="selectChartType('pie')">
+            <img src="{{ url_for('static', filename='images/chart_types/pie_chart.png') }}" class="card-img-top" alt="Pie Chart">
+            <div class="card-body">
+                <h5 class="card-title">Pie Chart</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Input to Store Selected Chart Type -->
+<input type="hidden" id="chart_type" name="chart_type" value="">
+
 <!-- Filter Form -->
 <form method="post" id="filter-form">
-    <div class="form-group">
-        <label for="chart_type">Chart Type:</label>
-        <!-- Chart type selection using images -->
-        <div class="chart-selection">
-            <img src="{{ url_for('static', filename='images/chart_types/bar_chart.png') }}" alt="Bar Chart" class="chart-image" onclick="selectChartType('bar')">
-            <img src="{{ url_for('static', filename='images/chart_types/line_chart.png') }}" alt="Line Chart" class="chart-image" onclick="selectChartType('line')">
-            <img src="{{ url_for('static', filename='images/chart_types/scatter_plot.png') }}" alt="Scatter Plot" class="chart-image" onclick="selectChartType('scatter')">
-            <img src="{{ url_for('static', filename='images/chart_types/pie_chart.png') }}" alt="Pie Chart" class="chart-image" onclick="selectChartType('pie')">
-        </div>
-        <input type="hidden" id="chart_type" name="chart_type" value="">
-    </div>
     <div class="form-group">
         <label for="x_input">X Column:</label>
         <select class="form-control" id="x_input" name="x_input">
@@ -55,24 +84,14 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        // Initialize DataTable with specific options
-        $('#data-table').DataTable({
-            "scrollY": "400px",
-            "scrollCollapse": true,
-            "paging": true,
-            "pageLength": 50,
-            "info": true,
-            "searching": true,
-            "ordering": true
-        });
-    });
-
-    // Function to select the chart type based on image click
     function selectChartType(type) {
         document.getElementById('chart_type').value = type;
-        // Update dropdown button text to selected chart type
-        document.getElementById('chartTypeDropdown').innerHTML = document.querySelector(`a[data-value="${type}"]`).innerHTML;
+        // Update the selected card to show it is selected
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.classList.remove('border-primary');
+        });
+        document.querySelector(`.card[onclick="selectChartType('${type}')"]`).classList.add('border-primary');
     }
 </script>
 

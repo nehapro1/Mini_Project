@@ -19,6 +19,14 @@
         .content {
             margin-top: 20px;
         }
+        .grid-stack-item-content {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            overflow: hidden;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -42,6 +50,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('graph_info') }}">Graph Info</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -49,5 +60,5 @@
             {% block content %}{% endblock %}
         </div>
     </div>
-</body>
+    </body>
 </html>
